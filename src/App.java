@@ -1,9 +1,10 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class App {
     public static void main(String[] args) {
-        // ArrayList<Expense> expenses = new ArrayList<>();
+        ArrayList<Expense> expenses = new ArrayList<>();
         HashMap<String, BigDecimal> totalAmountByCategory = new HashMap<>();
 
         int n = args.length;
@@ -16,6 +17,7 @@ public class App {
 
         switch (commannd) {
             case "add":
+                int id = expenses.isEmpty() ? 1 : expenses.get(expenses.size() - 1).getId() + 1;
                 BigDecimal amount = null;
                 String description = "";
                 String category = "";
@@ -63,11 +65,11 @@ public class App {
                     return;
                 }
 
-                // Expense expense = new Expense(amount, description, category);
+                Expense expense = new Expense(id, amount, description, category);
 
-                // System.out.println("Expense object created with ID: " + expense.getId() + " |
-                // " + description + " | "
-                // + amount + " | " + category);
+                System.out.println("Expense object created with ID: " + expense.getId() + " | "
+                        + expense.getDescription() + " | " + expense.getAmount() + " | "
+                        + expense.getCategory());
                 break;
 
             case "update":
