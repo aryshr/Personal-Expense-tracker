@@ -16,6 +16,15 @@ public class Expense {
         this.date = LocalDate.now();
     }
 
+    // Added this to provide custom date as per choice
+    public Expense(int id, BigDecimal amount, String description, String category, LocalDate date) {
+        this.id = id;
+        this.amount = amount;
+        this.description = description;
+        this.category = category;
+        this.date = date;
+    }
+
     public int getId() {
         return this.id;
     }
@@ -36,4 +45,12 @@ public class Expense {
         return this.date;
     }
 
+    public String toCsvLine() {
+        return String.join(",",
+                String.valueOf(id),
+                getDate().toString(),
+                getDescription(),
+                getAmount().toPlainString(),
+                getCategory());
+    }
 }

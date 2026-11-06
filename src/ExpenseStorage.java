@@ -1,6 +1,10 @@
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ExpenseStorage {
@@ -19,5 +23,25 @@ public class ExpenseStorage {
         }
         Files.write(path, lines);
 
+    }
+
+    public void saveExpenses(List<Expense> expenses) throws IOException {
+        List<String> expenseList = new ArrayList<>();
+        for (Expense expense : expenses) {
+            String csvLine = expense.toCsvLine();
+            expenseList.add(csvLine);
+        }
+        saveLines(expenseList);
+    }
+
+    private Expense fromCsvLine(String line) {
+        String[] expenseInfo = line.split(",");
+        int id = Integer.parseInt(expenseInfo[0]);
+        LocalDate date = LocalDate.parse(expenseInfo[1]);
+        String description = expenseInfo[2];
+        BigDecimal amt = new BigDecimal(expenseInfo[3]);
+        String category = expenseInfo[4];
+
+        return new Expense(id, amt, description, category, date);
     }
 }
