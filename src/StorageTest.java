@@ -1,34 +1,40 @@
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
 public class StorageTest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ExpenseStorage expenseStorage = new ExpenseStorage();
-        List<String> li = List.of("first record", "second record");
+        // List<String> li = List.of("first record", "second record");
 
-        Expense expense1 = new Expense(
-                1,
-                new BigDecimal("20.00"),
-                "Lunch",
-                "Food");
+        // Expense expense1 = new Expense(
+        // 1,
+        // new BigDecimal("20.00"),
+        // "Lunch",
+        // "Food");
 
-        Expense expense2 = new Expense(
-                2,
-                new BigDecimal("20.00"),
-                "Dinner",
-                "Food");
+        // Expense expense2 = new Expense(
+        // 2,
+        // new BigDecimal("20.00"),
+        // "Dinner",
+        // "Food");
 
-        List<Expense> expenses = List.of(expense1, expense2);
+        // List<Expense> expenses = List.of(expense1, expense2);
 
-        // Saving expenses
-        try {
-            expenseStorage.saveExpenses(expenses);
-        } catch (Exception e) {
-            System.out.println("Error while saving Expenses " + e.getMessage());
+        // // Saving expenses
+        // try {
+        // expenseStorage.saveExpenses(expenses);
+        // } catch (Exception e) {
+        // System.out.println("Error while saving Expenses " + e.getMessage());
+        // }
+
+        List<Expense> expenses1 = expenseStorage.loadExpenses();
+        for (Expense exp : expenses1) {
+            System.out.println(exp.toString());
         }
 
-        // Saving plain lines
+        // ****Saving plain lines just for testing - can be removed later*********
         // try {
         // expenseStorage.saveLines(li);
         // } catch (Exception e) {

@@ -53,4 +53,13 @@ public class Expense {
                 getAmount().toPlainString(),
                 getCategory());
     }
+
+    public String toString() {
+        return "ID: %s\n Amt: %s\n Description: %s\n Category: %s\n Date: %s".formatted(
+                this.getId(),
+                this.getAmount(),
+                this.getDescription(),
+                this.getCategory(),
+                this.getDate());
+    }
 }

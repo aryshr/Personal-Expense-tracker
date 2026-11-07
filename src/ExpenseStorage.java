@@ -44,4 +44,18 @@ public class ExpenseStorage {
 
         return new Expense(id, amt, description, category, date);
     }
+
+    public List<Expense> loadExpenses() throws IOException {
+        List<String> lines = loadLines();
+
+        List<Expense> expenses = new ArrayList<>();
+
+        for (String line : lines) {
+            Expense expense = fromCsvLine(line);
+            expenses.add(expense);
+        }
+
+        return expenses;
+
+    }
 }
