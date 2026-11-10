@@ -50,6 +50,9 @@ public class ExpenseStorage {
 
         List<Expense> expenses = new ArrayList<>();
 
+        if (lines.isEmpty())
+            return expenses;
+
         for (String line : lines) {
             Expense expense = fromCsvLine(line);
             expenses.add(expense);

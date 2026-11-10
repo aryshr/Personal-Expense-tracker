@@ -1,11 +1,20 @@
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
-        ArrayList<Expense> expenses = new ArrayList<>();
-        HashMap<String, BigDecimal> totalAmountByCategory = new HashMap<>();
+        ExpenseStorage expenseStorage = new ExpenseStorage();
+        Methods methods = new Methods();
+        List<Expense> expenses = null;
+
+        try {
+            expenses = expenseStorage.loadExpenses();
+        } catch (IOException e) {
+            System.out.println("Unable to loadexpenses from file" + e.getMessage());
+            return;
+        }
+
+        // HashMap<String, BigDecimal> totalAmountByCategory = new HashMap<>();
 
         int n = args.length;
         if (n == 0) {
@@ -13,59 +22,22 @@ public class App {
             System.out.println("Available commands: add, list, delete, summary");
             return;
         }
-        String commannd = args[0];
+        String command = args[0];
 
-        switch (commannd) {
+        switch (command) {
             case "add":
-                int id = expenses.isEmpty() ? 1 : expenses.get(expenses.size() - 1).getId() + 1;
-                BigDecimal amount = null;
-                String description = "";
-                String category = "";
-                for (int i = 1; i < args.length; i++) {
-                    if (args[i].equals("--description")) {
-                        if (i + 1 < n && !args[i + 1].startsWith("--")) {
-                            description = args[i + 1];
-                            i++;
-                        } else {
-                            System.out.println("Error! No description provided");
-                            return;
-                        }
-                    } else if (args[i].equals("--amount")) {
-                        if (i + 1 < n && !args[i + 1].startsWith("--")) {
-                            try {
-                                amount = new BigDecimal(args[i + 1]);
-                                i++;
-                            } catch (NumberFormatException e) {
-                                System.out.println("Error! Invalid amount provided");
-                                return;
-                            }
-                        } else {
-                            System.out.println("Error! No amount provided");
-                            return;
-                        }
-                    } else if (args[i].equals("--category")) {
-                        if (i + 1 < n && !args[i + 1].startsWith("--")) {
-                            category = args[i + 1];
-                            i++;
-                        } else {
-                            System.out.println("Error! No category provided");
-                            return;
-                        }
-                    } else {
-                        System.out.println("Error! Invalid option " + args[i]);
-                        return;
+                Expense expense = methods.add(args, expenses);
+                if (expense == null) {
+                    System.out.println("Not working");
+                } else {
+                    expenses.add(expense);
+                    try {
+                        expenseStorage.saveExpenses(expenses);
+                        System.out.println("Expense saved successfully! (ID : " + expense.getId() + ")");
+                    } catch (IOException e) {
+                        System.out.println("Failed to save expense " + e.getMessage());
                     }
                 }
-                if (amount == null || description.isBlank() || category.isBlank()) {
-                    System.out.println(
-                            "Error! Invalid format sequence need amount, category, description values as well.");
-                    return;
-                } else if (amount.signum() <= 0) {
-                    System.out.println("Error! Amount cannot be zero or negative.");
-                    return;
-                }
-
-                Expense expense = new Expense(id, amount, description, category);
 
                 System.out.println("Expense object created with ID: " + expense.getId() + " | "
                         + expense.getDescription() + " | " + expense.getAmount() + " | "
