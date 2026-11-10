@@ -54,12 +54,18 @@ public class Expense {
                 getCategory());
     }
 
+    public static String getHeader() {
+        return "%-5s %-12s %-20s %-15s %s".formatted(
+                "ID", "Date", "Description", "Category", "Amount");
+    }
+
+    @Override
     public String toString() {
-        return "ID: %s\n Amt: %s\n Description: %s\n Category: %s\n Date: %s".formatted(
+        return "%-5d %-12s %-20s %-15s $%s".formatted(
                 this.getId(),
-                this.getAmount(),
+                this.getDate(),
                 this.getDescription(),
                 this.getCategory(),
-                this.getDate());
+                this.getAmount());
     }
 }

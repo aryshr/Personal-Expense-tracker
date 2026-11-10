@@ -39,23 +39,35 @@ public class App {
                     }
                 }
 
-                System.out.println("Expense object created with ID: " + expense.getId() + " | "
-                        + expense.getDescription() + " | " + expense.getAmount() + " | "
-                        + expense.getCategory());
+                // System.out.println("Expense object created with ID: " + expense.getId() + " |
+                // "
+                // + expense.getDescription() + " | " + expense.getAmount() + " | "
+                // + expense.getCategory());
                 break;
 
             case "update":
                 System.out.println("Update expense");
                 break;
+
             case "delete":
-                System.out.println("Delete expense");
+                if (methods.deleteExpense(args, expenses)) {
+                    try {
+                        expenseStorage.saveExpenses(expenses);
+                        System.out.println("Expense deleted successfully");
+                    } catch (IOException e) {
+                        System.out.println("Unable to save expenses from file" + e.getMessage());
+                    }
+                }
                 break;
+
             case "list":
-                System.out.println("List expense");
+                methods.listExpenses(expenses);
                 break;
+
             case "summary":
                 System.out.println("Summary");
                 break;
+
             default:
                 System.out.println("Error! Invalid command.");
                 break;

@@ -1,4 +1,6 @@
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Methods {
@@ -55,5 +57,69 @@ public class Methods {
 
         return new Expense(id, amount, description, category);
 
+    }
+
+    public void listExpenses(List<Expense> expenses) {
+        if (expenses.isEmpty()) {
+            System.out.println("No expense present in the record!");
+            return;
+        }
+
+        System.out.println(Expense.getHeader());
+        for (Expense expense : expenses) {
+            System.out.println(expense);
+        }
+    }
+
+    public boolean deleteExpense(String[] args, List<Expense> expenses) {
+        int n = args.length;
+
+        if (n < 2) {
+            System.out.println("2 Arguments expected, given only one");
+            return false;
+        }
+        for (int i = 1; i < args.length; i++) {
+            if (args[i].equals("--id")) {
+                if (i + 1 < n && args[i + 1].matches("\\d+")) {
+
+                    int expenseId = 0;
+
+                    try {
+                        expenseId = Integer.parseInt(args[i + 1]);
+                    } catch (NumberFormatException e) {
+                        System.out.println("ID is too large " + e.getMessage());
+                        return false;
+                    }
+                    i++;
+
+                    if (expenseId <= 0) {
+                        System.out.println("Error! ID cannot be zero or negative.");
+                        return false;
+                    }
+                    boolean found = false;
+                    for (Expense expense : expenses) {
+                        if (expense.getId() == expenseId) {
+                            expenses.remove(expense);
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        System.out.println("Expense not found with ID: " + expenseId);
+                        return false;
+
+                    }
+                } else {
+                    System.out.println("Wrong input provided! Need an ID of the expense to be deleted");
+                    return false;
+                }
+            } else {
+                System.out.println("Invalid Option! Use --id followed by an ID");
+                return false;
+            }
+
+        }
+        return true;
     }
 }
